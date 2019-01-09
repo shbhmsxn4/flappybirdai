@@ -5,7 +5,7 @@ let birdSize = 50;
 let bird = null;
 let obstacle = null;
 let obstacleWidth = 75;
-let passingHeight = 3*birdSize; 
+let passingHeight = 2.75*birdSize; 
 let gameOver = null;
 
 function setup () {
@@ -52,7 +52,7 @@ class Bird {
         this.yVelocity = flapPower;
     }
     show() {
-        ellipse(this.x, this.y, birdSize, birdSize);
+        rect(this.x - birdSize/2, this.y-birdSize/2, birdSize, birdSize); 
     }
     update() {
         this.y += this.yVelocity;
@@ -74,4 +74,4 @@ class Obstacle {
         this.xPosition  += obstacleSpeed;
     }
     
-}
+ }
