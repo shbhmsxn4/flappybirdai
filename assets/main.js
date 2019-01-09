@@ -1,7 +1,7 @@
 let flapPower = -5;
 let gravity = 0.25;
 let obstacleSpeed = -3;
-let birdSize = 50;
+let birdSize = 40;
 let bird = null;
 let obstacle = [];
 let obstacleWidth = 75;
@@ -20,10 +20,14 @@ function setup () {
     createCanvas(1000, 600);
     background(color(135,206,250));
     bird = new Bird();
-    obstacle = [];
-    obstacle.push(new Obstacle(400,75));
-    obstacle.push(new Obstacle(400 + obstacleDistance,height - passingHeight-75));
+    obstacle = [6];
+    obstacle.push(new Obstacle(400,randomInteger(75, height - passingHeight-75)));
+    obstacle.push(new Obstacle(400 + obstacleDistance,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + 2* obstacleDistance,randomInteger(75, height - passingHeight-75)));
+    obstacle.push(new Obstacle(400 + 3* obstacleDistance,randomInteger(75, height - passingHeight-75)));
+    obstacle.push(new Obstacle(400 + 4* obstacleDistance,randomInteger(75, height - passingHeight-75)));
+    obstacle.push(new Obstacle(400 + 5* obstacleDistance,randomInteger(75, height - passingHeight-75)));
+    obstacle.push(new Obstacle(400 + 6* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     gameOver = false;
     
 }
@@ -37,7 +41,10 @@ function draw () {
             o.update();
             o.show();
         });
-
+        if(obstacle[0].xPosition <= -obstacleWidth){
+            obstacle.shift();
+            obstacle.push( new Obstacle(obstacle[obstacle.length-1].xPosition + obstacleDistance, randomInteger(75, height - passingHeight-75)) );
+        }
     }
     else {
         if (keyIsPressed) {
