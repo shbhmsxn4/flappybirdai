@@ -20,14 +20,13 @@ function setup () {
     createCanvas(1000, 600);
     background(color(135,206,250));
     bird = new Bird();
-    obstacle = [6];
+    obstacle = [];
     obstacle.push(new Obstacle(400,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + obstacleDistance,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + 2* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + 3* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + 4* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + 5* obstacleDistance,randomInteger(75, height - passingHeight-75)));
-    obstacle.push(new Obstacle(400 + 6* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     gameOver = false;
     
 }
@@ -40,6 +39,11 @@ function draw () {
         obstacle.forEach(o => {
             o.update();
             o.show();
+        });
+        obstacle.forEach(o =>    {
+            if( (bird.top < o.upperHeight || bird.bottom > o.lowerHeight) && (bird.right > o.left && bird.left < o.right) ){
+                gameOver = true;
+            }
         });
         if(obstacle[0].xPosition <= -obstacleWidth){
             obstacle.shift();
@@ -68,16 +72,22 @@ class Bird {
         this.y = 300;
         this.xVelocity = 0;
         this.yVelocity = 0;
+        this.top = this.y - birdSize/2;
+        this.bottom = this.y + birdSize/2;
+        this.left = this.x - birdSize/2;
+        this.right = this.x + birdSize/2;
     }
     flap() {
         this.yVelocity = flapPower;
     }
     show() {
-        rect(this.x - birdSize/2, this.y-birdSize/2, birdSize, birdSize); 
+        rect(this.left, this.top, birdSize, birdSize); 
     }
     update() {
         this.y += this.yVelocity;
         this.yVelocity += gravity;
+        this.top = this.y - birdSize/2;
+        this.bottom = this.y + birdSize/2;
         if (height <= ( this.y+ (birdSize/2) ) ) gameOver = true;
     }
 }
@@ -86,13 +96,18 @@ class Obstacle {
     constructor(xPosition, height) {
         this.xPosition = xPosition;
         this.height = height;
+        this.upperHeight = height;
+        this.lowerHeight = this.height + passingHeight;
+        this.left = this.xPosition;
+        this.right = this.xPosition + obstacleWidth;
     }
     show() {
-        rect(this.xPosition, this.height, obstacleWidth, passingHeight-height);
-        rect(this.xPosition, this.height+passingHeight, obstacleWidth, height - passingHeight);
+        rect(this.left, this.upperHeight, obstacleWidth, passingHeight-height);
+        rect(this.left, this.lowerHeight, obstacleWidth, height - passingHeight);
     }
     update()    {
         this.xPosition  += obstacleSpeed;
-    }
-    
+        this.left = this.xPosition;
+        this.right = this.xPosition + obstacleWidth;
+    } 
  }
