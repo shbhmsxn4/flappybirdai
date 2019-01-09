@@ -8,17 +8,23 @@ let obstacleWidth = 75;
 let passingHeight = 2.75*birdSize; 
 let gameOver = null;
 let obstacleDistance = 3.8 * obstacleWidth;
+let img;
+let bg;
+let pipel;
+let pipeu;
 
 function randomInteger(min, max) {
     let rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
 }
 
-
-
 function setup () {
     createCanvas(1000, 600);
     background(color(135,206,250));
+    img = loadImage("assets/images/bird.png");  // Load the image
+    bg = loadImage("assets/images/bg.png");
+    pipel = loadImage("assets/images/pipe-l.png");
+    pipeu = loadImage("assets/images/pipe-u.png");
     bird = new Bird();
     obstacle = [];
     obstacle.push(new Obstacle(400,randomInteger(75, height - passingHeight-75)));
@@ -33,7 +39,8 @@ function setup () {
 
 function draw () {
     if (!gameOver) {
-        background(color(135,206,250));
+        // background(color(135,206,250));
+        background(bg);
         bird.update();
         bird.show();
         obstacle.forEach(o => {
@@ -81,7 +88,8 @@ class Bird {
         this.yVelocity = flapPower;
     }
     show() {
-        rect(this.left, this.top, birdSize, birdSize); 
+        // rect(this.left, this.top, birdSize, birdSize); 
+        image(img, this.x, this.y, birdSize, birdSize);
     }
     update() {
         this.y += this.yVelocity;
@@ -102,8 +110,11 @@ class Obstacle {
         this.right = this.xPosition + obstacleWidth;
     }
     show() {
-        rect(this.left, this.upperHeight, obstacleWidth, passingHeight-height);
-        rect(this.left, this.lowerHeight, obstacleWidth, height - passingHeight);
+        fill(5,135,56);
+        // rect(this.left, this.upperHeight, obstacleWidth, passingHeight-height);
+        image(pipeu,this.left, this.upperHeight, obstacleWidth, passingHeight-height );
+        // rect(this.left, this.lowerHeight, obstacleWidth, height - passingHeight);
+        image(pipel,this.left, this.lowerHeight, obstacleWidth, height - passingHeight );
     }
     update()    {
         this.xPosition  += obstacleSpeed;
