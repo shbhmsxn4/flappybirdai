@@ -8,4 +8,8 @@ function gameStartup () {
     ctx.stroke();
 }
 
-window.onload = gameStartup;
+function setupWindow () {
+
+}
+
+window.onload = setupWindow;
