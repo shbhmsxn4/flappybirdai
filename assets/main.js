@@ -3,16 +3,27 @@ let gravity = 0.25;
 let obstacleSpeed = -3;
 let birdSize = 50;
 let bird = null;
-let obstacle = null;
+let obstacle = [];
 let obstacleWidth = 75;
 let passingHeight = 3*birdSize; 
 let gameOver = null;
+let obstacleDistance = 3.8 * obstacleWidth;
+
+function randomInteger(min, max) {
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
+    return Math.round(rand);
+}
+
+
 
 function setup () {
-    createCanvas(800, 600);
+    createCanvas(1000, 600);
     background(color(135,206,250));
     bird = new Bird();
-    obstacle = new Obstacle(400,200);
+    obstacle = [];
+    obstacle.push(new Obstacle(400,75));
+    obstacle.push(new Obstacle(400 + obstacleDistance,height - passingHeight-75));
+    obstacle.push(new Obstacle(400 + 2* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     gameOver = false;
     
 }
@@ -21,9 +32,12 @@ function draw () {
     if (!gameOver) {
         background(color(135,206,250));
         bird.update();
-        obstacle.update();
         bird.show();
-        obstacle.show();
+        obstacle.forEach(o => {
+            o.update();
+            o.show();
+        });
+
     }
     else {
         if (keyIsPressed) {
