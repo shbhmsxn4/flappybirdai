@@ -18,7 +18,7 @@ function draw () {
 class Bird {
     constructor() {
         this.x = 100;
-        this.y = 300;g
+        this.y = 300;
         this.xVelocity = 0;
         this.yVelocity = 0;
     }
