@@ -28,6 +28,7 @@ function setup () {
     createCanvas(1000, 600);
     background(color(135,206,250));
     img = loadImage("assets/images/bird.png");  // Load the image
+    // img = loadImage("assets/images/squarebird.png");
     bg = loadImage("assets/images/bg.png");
     pipel = loadImage("assets/images/pipe-l.png");
     pipeu = loadImage("assets/images/pipe-u.png");
