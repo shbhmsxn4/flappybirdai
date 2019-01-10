@@ -12,6 +12,12 @@ let img;
 let bg;
 let pipel;
 let pipeu;
+let score = 0;
+let birdInPipe = false;
+let birdWasInPipe = false;
+let font;
+let fontSize = 40;
+let fontPath = "assets/fonts/theboldfont.ttf";
 
 function randomInteger(min, max) {
     let rand = min - 0.5 + Math.random() * (max - min + 1);
@@ -25,6 +31,10 @@ function setup () {
     bg = loadImage("assets/images/bg.png");
     pipel = loadImage("assets/images/pipe-l.png");
     pipeu = loadImage("assets/images/pipe-u.png");
+    font = loadFont(fontPath);
+    textFont(font);
+    textSize(fontSize);
+    textAlign(CENTER, CENTER);
     bird = new Bird();
     obstacle = [];
     obstacle.push(new Obstacle(400,randomInteger(75, height - passingHeight-75)));
@@ -34,7 +44,9 @@ function setup () {
     obstacle.push(new Obstacle(400 + 4* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     obstacle.push(new Obstacle(400 + 5* obstacleDistance,randomInteger(75, height - passingHeight-75)));
     gameOver = false;
-    
+    score = 0;
+    birdInPipe = false;
+    birdWasInPipe = false;
 }
 
 function draw () {
@@ -47,11 +59,24 @@ function draw () {
             o.update();
             o.show();
         });
+        fill(255);
+        showScore();
+        birdInPipe = false;
         obstacle.forEach(o =>    {
             if( (bird.top < o.upperHeight || bird.bottom > o.lowerHeight) && (bird.right > o.left && bird.left < o.right) ){
                 gameOver = true;
             }
+            if (bird.right > o.left && bird.left < o.right) {
+                birdInPipe = true;
+            }
         });
+        if (birdWasInPipe && !birdInPipe) {
+            score++;
+            birdWasInPipe = false;
+        }
+        else {
+            birdWasInPipe = birdInPipe;
+        }
         if(obstacle[0].xPosition <= -obstacleWidth){
             obstacle.shift();
             obstacle.push( new Obstacle(obstacle[obstacle.length-1].xPosition + obstacleDistance, randomInteger(75, height - passingHeight-75)) );
@@ -62,6 +87,10 @@ function draw () {
             setup();
         }
     }
+}
+
+function showScore() {
+    text("Score: " + score.toString(), width/2, 40);
 }
 
 function keyPressed() {
