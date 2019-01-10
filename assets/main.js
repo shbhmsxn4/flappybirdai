@@ -89,7 +89,7 @@ class Bird {
     }
     show() {
         // rect(this.left, this.top, birdSize, birdSize); 
-        image(img, this.x, this.y, birdSize, birdSize);
+        image(img, this.left, this.top, birdSize, birdSize);
     }
     update() {
         this.y += this.yVelocity;
