@@ -3,11 +3,11 @@
 let networkLayers = [4, 1];
 
 let crossoverUniformity = 0.5;
-let mutationProbability = 0.8;
+let mutationProbability = 0.15;
 let mutationProbabilityIncrement = 0.05;
 let maxMutationProbability = 0.95;
 let tournamentSize = 50;
-let elitism = false;
+let elitism = true;
 let randomIndividuals = 0;
 let currentGeneration;
 let generationSize = 500;
@@ -21,7 +21,7 @@ let birdSize = 40;
 let obstacle = [];
 let obstacleWidth = 75;
 let passingHeight = 3*birdSize; 
-let obstacleDistance = 3.8 * obstacleWidth;
+let obstacleDistance = 4.2 * obstacleWidth;
 
 // --------------------AI Variables--------------------
 
@@ -410,26 +410,29 @@ class AIPlayer {
         }
     }
     mutate() {
-        let newWeights = math.clone(this.network.weights);
-        let newBiases = math.clone(this.network.biases);
-        newWeights.forEach(w => {
-            w = math.map(w, function(value) {
+        let newWeights = [];
+        let newBiases = [];
+        for (let i=0 ; i<this.network.weights.length ; i++) {
+            let w = math.map(this.network.weights[i], function(value) {
                 if (math.random() < mutationProbability) {
                     return math.random(-1, 1);
                 } else {
                     return value;
                 }
             });
-        });
-        newBiases.forEach(b => {
-            b = math.map(b, function(value) {
+            newWeights.push(w);
+
+        }
+        for (let i=0 ; i<this.network.biases.length ; i++) {
+            let b = math.map(this.network.biases[i], function(value) {
                 if (math.random() < mutationProbability) {
                     return math.random(-1, 1);
                 } else {
                     return value;
                 }
             });
-        });
+            newBiases.push(b);
+        }
         return [newWeights, newBiases];
     }
 }
